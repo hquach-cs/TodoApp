@@ -7,6 +7,7 @@ import {
   FlatList,
   TouchableHighlight,
 } from "react-native";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 const TASKS = [
   {
@@ -43,8 +44,12 @@ const Task = ({ task, nav }) => {
 
   return (
     <TouchableHighlight
-      onPress={() => nav.navigate("Task")}
-      underlayColor={"#fff"}
+      onPress={() =>
+        nav.navigate("Task", {
+          TaskObj: task,
+        })
+      }
+      underlayColor={"#252525"}
       style={styles.task_container}
     >
       <View style={styles.task_container}>
@@ -63,7 +68,7 @@ export const Home = ({ navigation }) => {
       <StatusBar
         backgroundColor="transparent"
         translucent={true}
-        barStyle="dark-content"
+        barStyle="light-content"
       />
       <Header />
       <View style={styles.flatlist_container}>
@@ -71,15 +76,21 @@ export const Home = ({ navigation }) => {
           style={styles.flatlist}
           data={TASKS}
           renderItem={renderTask}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item) => item.id.toString()}
         />
       </View>
       <TouchableHighlight
-        style={styles.button_container}
+        style={styles.button}
         onPress={() => console.log("Adding Task")}
-        underlayColor={"#fff"}
+        underlayColor={"252525"}
       >
-        <View>
+        <View style={styles.button_container}>
+          <FontAwesome5
+            name="plus"
+            color={"#fff"}
+            size={16}
+            style={{ paddingRight: 5 }}
+          />
           <Text style={styles.button_title}>Add Task</Text>
         </View>
       </TouchableHighlight>
@@ -90,7 +101,7 @@ export const Home = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
+    backgroundColor: "#252525",
     alignItems: "center",
     paddingTop: StatusBar.currentHeight * 1.5,
   },
@@ -102,11 +113,13 @@ const styles = StyleSheet.create({
   header_title: {
     fontSize: 24,
     fontWeight: "bold",
+    color: "#fff",
   },
   flatlist_container: { height: "70%" },
   task_container: {
     width: 200,
     height: 45,
+    borderColor: "#fff",
     borderWidth: 1,
     borderRadius: 10,
     flexDirection: "row",
@@ -117,13 +130,14 @@ const styles = StyleSheet.create({
   task_title: {
     fontWeight: "bold",
     fontSize: 16,
+    color: "#fff",
   },
   task_todo: {
     color: "#959090",
     fontWeight: "bold",
   },
-  button_container: {
-    backgroundColor: "#fff",
+  button: {
+    backgroundColor: "#252525",
     width: 200,
     borderRadius: 10,
     borderWidth: 2,
@@ -135,9 +149,16 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 10,
     elevation: 10,
+    borderColor: "#fff",
+  },
+  button_container: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
   },
   button_title: {
     fontWeight: "bold",
     fontSize: 20,
+    color: "#fff",
   },
 });
