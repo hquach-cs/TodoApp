@@ -6,6 +6,7 @@ import {
   StatusBar,
   FlatList,
   TouchableHighlight,
+  TextInput,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -15,6 +16,8 @@ export const Task = ({ route, navigation }) => {
   const [Todos, setTodos] = useState(Task.todos);
   const [update, setUpdate] = useState(false);
   const [changed, setChange] = useState(false);
+  const [text, onChangeText] = React.useState(null);
+  const [number, onChangeNumber] = React.useState(null);
   const renderTodo = ({ item, index }) => {
     return (
       <View style={styles.todo_container}>
@@ -47,6 +50,10 @@ export const Task = ({ route, navigation }) => {
         </Text>
       </View>
     );
+  };
+
+  const addTask = () => {
+    setTodos([...Todos, { id: Todos.length + 1, todo: text, done: false }]);
   };
 
   return (
@@ -86,6 +93,28 @@ export const Task = ({ route, navigation }) => {
           renderItem={renderTodo}
           keyExtractor={(item) => item.id.toString()}
         />
+      </View>
+      <View
+        style={{
+          width: "90%",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+          placeholder="New Task"
+          placeholderTextColor="#afafaf"
+        />
+        <TouchableHighlight
+          onPress={() => addTask()}
+          underlayColor={"#252525"}
+          style={styles.button}
+        >
+          <FontAwesome5 name="plus" size={18} color="#fff" />
+        </TouchableHighlight>
       </View>
     </View>
   );
@@ -138,5 +167,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 18,
     color: "#fff",
+  },
+  input: {
+    color: "#fff",
+    borderColor: "#fff",
+    width: 200,
+    height: 50,
+    borderWidth: 2,
+    textAlign: "center",
+    borderRadius: 25,
+    fontSize: 18,
+  },
+  button: {
+    width: 50,
+    height: 50,
+    borderWidth: 2,
+    borderRadius: 25,
+    borderColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });

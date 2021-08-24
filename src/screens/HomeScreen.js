@@ -6,6 +6,7 @@ import {
   StatusBar,
   FlatList,
   TouchableHighlight,
+  TextInput,
 } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 
@@ -61,7 +62,20 @@ const Task = ({ task, nav }) => {
 };
 
 export const Home = ({ navigation }) => {
+  const [Todos, setTodos] = React.useState(TASKS);
   const renderTask = ({ item }) => <Task task={item} nav={navigation} />;
+  const [text, onChangeText] = React.useState(null);
+
+  const addTask = () => {
+    setTodos([
+      ...Todos,
+      {
+        id: Todos.length + 1,
+        task: text,
+        todos: [],
+      },
+    ]);
+  };
 
   return (
     <View style={styles.container}>
@@ -74,12 +88,12 @@ export const Home = ({ navigation }) => {
       <View style={styles.flatlist_container}>
         <FlatList
           style={styles.flatlist}
-          data={TASKS}
+          data={Todos}
           renderItem={renderTask}
           keyExtractor={(item) => item.id.toString()}
         />
       </View>
-      <TouchableHighlight
+      {/* <TouchableHighlight
         style={styles.button}
         onPress={() => console.log("Adding Task")}
         underlayColor={"252525"}
@@ -93,7 +107,29 @@ export const Home = ({ navigation }) => {
           />
           <Text style={styles.button_title}>Add Task</Text>
         </View>
-      </TouchableHighlight>
+      </TouchableHighlight> */}
+      <View
+        style={{
+          width: "90%",
+          flexDirection: "row",
+          justifyContent: "space-evenly",
+        }}
+      >
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+          placeholder="New Task"
+          placeholderTextColor="#afafaf"
+        />
+        <TouchableHighlight
+          onPress={() => addTask()}
+          underlayColor={"#252525"}
+          style={styles.button}
+        >
+          <FontAwesome5 name="plus" size={18} color="#fff" />
+        </TouchableHighlight>
+      </View>
     </View>
   );
 };
@@ -160,5 +196,24 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     color: "#fff",
+  },
+  input: {
+    color: "#fff",
+    borderColor: "#fff",
+    width: 200,
+    height: 50,
+    borderWidth: 2,
+    textAlign: "center",
+    borderRadius: 25,
+    fontSize: 18,
+  },
+  button: {
+    width: 50,
+    height: 50,
+    borderWidth: 2,
+    borderRadius: 25,
+    borderColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
