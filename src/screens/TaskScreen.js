@@ -48,6 +48,18 @@ export const Task = ({ route, navigation }) => {
         >
           {item.todo}
         </Text>
+        <TouchableHighlight
+          underlayColor={"#252525"}
+          onPress={() => {
+            setChange(true);
+            setUpdate(!update);
+            let updatedTodos = Todos;
+            updatedTodos.splice(index, 1);
+            setTodos(updatedTodos);
+          }}
+        >
+          <FontAwesome5 name="times-circle" color="#fff" size={24} />
+        </TouchableHighlight>
       </View>
     );
   };
