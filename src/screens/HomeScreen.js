@@ -37,7 +37,7 @@ const Header = () => {
   );
 };
 
-const Task = ({ task, nav }) => {
+const Task = ({ task, nav, index }) => {
   const getTodos = (task) => {
     var arr = task.todos.filter((todo) => todo.done === true);
     return arr.length + "/" + task.todos.length;
@@ -61,21 +61,31 @@ const Task = ({ task, nav }) => {
   );
 };
 
-export const Home = ({ navigation }) => {
+export const Home = ({ route, navigation }) => {
   const [Todos, setTodos] = React.useState(TASKS);
   const renderTask = ({ item }) => <Task task={item} nav={navigation} />;
   const [text, onChangeText] = React.useState(null);
 
   const addTask = () => {
-    setTodos([
-      ...Todos,
-      {
-        id: Todos.length + 1,
-        task: text,
-        todos: [],
-      },
-    ]);
+    if (Todos.length < 20) {
+      setTodos([
+        ...Todos,
+        {
+          id: Todos.length + 1,
+          task: text,
+          todos: [],
+        },
+      ]);
+    }
   };
+
+  if (route.params != undefined) {
+    if (route.params.saved == true) {
+      // let oldTodos = Todos;
+      // oldTodos[route.params.id - 1].todos = route.params.Todos;
+      // setTodos(oldTodos);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -85,34 +95,13 @@ export const Home = ({ navigation }) => {
         barStyle="light-content"
       />
       <Header />
-      <View style={styles.flatlist_container}>
-        <FlatList
-          style={styles.flatlist}
-          data={Todos}
-          renderItem={renderTask}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
-      {/* <TouchableHighlight
-        style={styles.button}
-        onPress={() => console.log("Adding Task")}
-        underlayColor={"252525"}
-      >
-        <View style={styles.button_container}>
-          <FontAwesome5
-            name="plus"
-            color={"#fff"}
-            size={16}
-            style={{ paddingRight: 5 }}
-          />
-          <Text style={styles.button_title}>Add Task</Text>
-        </View>
-      </TouchableHighlight> */}
       <View
         style={{
           width: "90%",
           flexDirection: "row",
           justifyContent: "space-evenly",
+          marginTop: 30,
+          marginBottom: 30,
         }}
       >
         <TextInput
@@ -129,6 +118,14 @@ export const Home = ({ navigation }) => {
         >
           <FontAwesome5 name="plus" size={18} color="#fff" />
         </TouchableHighlight>
+      </View>
+      <View style={styles.flatlist_container}>
+        <FlatList
+          style={styles.flatlist}
+          data={Todos}
+          renderItem={renderTask}
+          keyExtractor={(item) => item.id.toString()}
+        />
       </View>
     </View>
   );

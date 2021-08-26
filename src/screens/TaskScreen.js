@@ -65,7 +65,12 @@ export const Task = ({ route, navigation }) => {
   };
 
   const addTask = () => {
-    setTodos([...Todos, { id: Todos.length + 1, todo: text, done: false }]);
+    if (Todos.length < 20) {
+      setChange(true);
+      let updatedTodos = Todos;
+      updatedTodos.push({ id: Todos.length + 1, todo: text, done: false });
+      setTodos(updatedTodos);
+    }
   };
 
   return (
@@ -90,27 +95,30 @@ export const Task = ({ route, navigation }) => {
           }}
         >
           {changed ? (
-            <FontAwesome5 name="check" size={24} color={"#fff"} />
+            <TouchableHighlight
+              onPress={() =>
+                navigation.navigate("Home", {
+                  saved: true,
+                  id: Task.id,
+                  Todos: Todos,
+                })
+              }
+            >
+              <FontAwesome5 name="check" size={24} color={"#fff"} />
+            </TouchableHighlight>
           ) : (
             <View />
           )}
           <FontAwesome5 name="plus" size={24} color={"#fff"} />
         </View>
       </View>
-      <View style={styles.flatlist_container}>
-        <FlatList
-          style={styles.flatlist}
-          data={Todos}
-          extraData={update}
-          renderItem={renderTodo}
-          keyExtractor={(item) => item.id.toString()}
-        />
-      </View>
       <View
         style={{
           width: "90%",
           flexDirection: "row",
           justifyContent: "space-evenly",
+          marginTop: 30,
+          marginBottom: 30,
         }}
       >
         <TextInput
@@ -127,6 +135,15 @@ export const Task = ({ route, navigation }) => {
         >
           <FontAwesome5 name="plus" size={18} color="#fff" />
         </TouchableHighlight>
+      </View>
+      <View style={styles.flatlist_container}>
+        <FlatList
+          style={styles.flatlist}
+          data={Todos}
+          extraData={update}
+          renderItem={renderTodo}
+          keyExtractor={(item) => item.id.toString()}
+        />
       </View>
     </View>
   );
