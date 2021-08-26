@@ -4,7 +4,6 @@ The goal of this project is to increase my knowledge of React Native and mobile 
 
 <p align="center">
 <img src="./screenshots/Homescreen_01.png" alt="Home" width="300" height="600"/>
-<img src="./screenshots/Homescreen_03.png" alt="confirmation" width="300" height="600"/>
 <img src="./screenshots/Taskscreen_01.png" alt="confirmation" width="300" height="600"/>
 <img src="./screenshots/Taskscreen_03.png" alt="confirmation" width="300" height="600"/>
 </p>
